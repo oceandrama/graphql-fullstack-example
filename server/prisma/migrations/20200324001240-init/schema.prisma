@@ -3,7 +3,7 @@
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
+  url = "***"
 }
 
 generator client {
@@ -18,7 +18,6 @@ model User {
     email String @unique
     password String
     posts Post[]
-    comments Comment[]
 }
 
 model Post {
@@ -28,16 +27,4 @@ model Post {
     title String
     text String?
     author User
-    comments Comment[]
-}
-
-model Comment {
-    id Int @id @default(autoincrement())
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
-    author User
-    post Post
-    text String
-    replyTo Comment? @relation(name: "replyTo")
-    replies Comment[] @relation(name: "replyTo")
 }
