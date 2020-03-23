@@ -1,8 +1,17 @@
 import CssBaseline from "@material-ui/core/CssBaseline";
 import App from "next/app";
 import Head from "next/head";
+import { createStyles, WithStyles } from "@material-ui/core";
+import { withStyles } from "@material-ui/styles";
 
-export default class MyApp extends App {
+const styles = createStyles({
+  container: {
+    width: 500,
+    margin: "0 auto"
+  }
+});
+
+class MyApp extends App<WithStyles<typeof styles>> {
   componentDidMount() {
     const jssStyles = document.querySelector("#jss-server-side");
     if (jssStyles) {
@@ -11,7 +20,7 @@ export default class MyApp extends App {
   }
 
   render() {
-    const { Component, pageProps } = this.props;
+    const { Component, pageProps, classes } = this.props;
 
     return (
       <>
@@ -23,8 +32,12 @@ export default class MyApp extends App {
           />
         </Head>
         <CssBaseline />
-        <Component {...pageProps} />
+        <main className={classes.container}>
+          <Component {...pageProps} />
+        </main>
       </>
     );
   }
 }
+
+export default withStyles(styles)(MyApp);

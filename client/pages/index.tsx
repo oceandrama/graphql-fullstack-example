@@ -1,4 +1,4 @@
-import { List, ListItem, makeStyles } from "@material-ui/core";
+import { List, ListItem } from "@material-ui/core";
 import { NextPage } from "next";
 import PostCard from "../components/PostCard";
 
@@ -27,18 +27,9 @@ const posts = [
   }
 ];
 
-const useStyles = makeStyles({
-  list: {
-    width: 500,
-    margin: "0 auto"
-  }
-});
-
 const Home: NextPage = () => {
-  const classes = useStyles();
-
   return (
-    <List className={classes.list}>
+    <List>
       {posts.map(post => (
         <ListItem key={post.id}>
           <PostCard post={post} />
