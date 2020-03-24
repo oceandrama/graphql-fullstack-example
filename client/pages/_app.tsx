@@ -3,6 +3,8 @@ import App from "next/app";
 import Head from "next/head";
 import { createStyles, WithStyles } from "@material-ui/core";
 import { withStyles } from "@material-ui/styles";
+import { ApolloProvider } from "@apollo/client";
+import withApollo, { WithApollo } from "../lib/withApollo";
 
 const styles = createStyles({
   container: {
@@ -11,7 +13,7 @@ const styles = createStyles({
   }
 });
 
-class MyApp extends App<WithStyles<typeof styles>> {
+class MyApp extends App<WithApollo & WithStyles<typeof styles>> {
   componentDidMount() {
     const jssStyles = document.querySelector("#jss-server-side");
     if (jssStyles) {
@@ -20,12 +22,12 @@ class MyApp extends App<WithStyles<typeof styles>> {
   }
 
   render() {
-    const { Component, pageProps, classes } = this.props;
+    const { Component, pageProps, classes, apolloClient } = this.props;
 
     return (
       <>
         <Head>
-          <title>My page</title>
+          <title>Next.js + Prisma</title>
           <meta
             name="viewport"
             content="minimum-scale=1, initial-scale=1, width=device-width"
@@ -33,11 +35,14 @@ class MyApp extends App<WithStyles<typeof styles>> {
         </Head>
         <CssBaseline />
         <main className={classes.container}>
-          <Component {...pageProps} />
+          <ApolloProvider client={apolloClient}>
+            <Component {...pageProps} />
+          </ApolloProvider>
         </main>
       </>
     );
   }
 }
 
-export default withStyles(styles)(MyApp);
+const StyledApp = withStyles(styles)(MyApp) as typeof MyApp 
+export default withApollo(StyledApp);

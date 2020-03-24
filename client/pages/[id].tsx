@@ -1,37 +1,37 @@
-import { Divider, List, ListItem, makeStyles } from "@material-ui/core";
+import { gql, useQuery } from "@apollo/client";
+import {
+  CircularProgress,
+  Divider,
+  List,
+  ListItem,
+  makeStyles
+} from "@material-ui/core";
 import { NextPage } from "next";
 import CommentCard from "../components/CommentCard";
 import PostCard from "../components/PostCard";
 
-const post = {
-  id: 2,
-  title: "Хочу Нобелевскую премию!",
-  text: "Поигралась с реагентами, пока муж спит, люблю его",
-  createdAt: "1902-09-12",
-  rating: -1,
-  author: {
-    id: 2,
-    name: "Мария Кюри"
-  },
-  comments: [
-    {
-      id: 1,
-      text: "Мария, ты в курсе, что они радиоактивные?!",
-      author: {
-        id: 3,
-        name: "Пьер Кюри"
+const GET_POST_QUERY = gql`
+  query GetPost($id: Int!) {
+    post(where: { id: $id }) {
+      id
+      title
+      text
+      createdAt
+      author {
+        id
+        name
       }
-    },
-    {
-      id: 2,
-      text: "Мама, когда я вырасту, я тоже буду ученым!",
-      author: {
-        id: 4,
-        name: "Ирен Кюри"
+      comments {
+        id
+        text
+        author {
+          id
+          name
+        }
       }
     }
-  ]
-};
+  }
+`;
 
 const useStyles = makeStyles(theme => ({
   list: {
@@ -43,17 +43,31 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const PostDetail: NextPage = () => {
+interface PostDetailProps {
+  id: number;
+}
+
+const PostDetail: NextPage<PostDetailProps> = ({ id }) => {
   const classes = useStyles();
+
+  const { loading, data } = useQuery(GET_POST_QUERY, {
+    variables: {
+      id
+    }
+  });
+
+  if (loading && !data) {
+    return <CircularProgress />;
+  }
 
   return (
     <List>
       <ListItem>
-        <PostCard post={post} />
+        <PostCard post={data.post} />
       </ListItem>
       <ListItem>
         <List className={classes.list}>
-          {post.comments.map(comment => (
+          {data.post.comments.map(comment => (
             <>
               <CommentCard comment={comment} />
               <Divider variant="inset" component="li" />
@@ -64,5 +78,7 @@ const PostDetail: NextPage = () => {
     </List>
   );
 };
+
+PostDetail.getInitialProps = ({ query }) => ({ id: Number(query.id) });
 
 export default PostDetail;
