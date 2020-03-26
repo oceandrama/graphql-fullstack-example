@@ -1,9 +1,8 @@
+import { ApolloProvider } from "@apollo/client";
+import { createStyles, WithStyles, withStyles } from "@material-ui/core";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import App from "next/app";
 import Head from "next/head";
-import { createStyles, WithStyles } from "@material-ui/core";
-import { withStyles } from "@material-ui/styles";
-import { ApolloProvider } from "@apollo/client";
 import withApollo, { WithApollo } from "../lib/withApollo";
 
 const styles = createStyles({
