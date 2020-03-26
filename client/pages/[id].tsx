@@ -7,30 +7,22 @@ import {
   makeStyles
 } from "@material-ui/core";
 import { NextPage } from "next";
-import CommentCard from "../components/CommentCard";
-import PostCard from "../components/PostCard";
+import CommentCard, {
+  COMMENT_ON_CARD_FRAGMENT
+} from "../components/CommentCard";
+import PostCard, { POST_ON_CARD_FRAGMENT } from "../components/PostCard";
 
 const GET_POST_QUERY = gql`
   query GetPost($id: Int!) {
     post(where: { id: $id }) {
-      id
-      title
-      text
-      createdAt
-      author {
-        id
-        name
-      }
+      ...PostOnCard
       comments {
-        id
-        text
-        author {
-          id
-          name
-        }
+        ...CommentOnCard
       }
     }
   }
+  ${POST_ON_CARD_FRAGMENT}
+  ${COMMENT_ON_CARD_FRAGMENT}
 `;
 
 const useStyles = makeStyles(theme => ({

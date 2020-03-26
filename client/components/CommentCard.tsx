@@ -1,11 +1,20 @@
+import { gql } from "@apollo/client";
+import { ListItem, ListItemAvatar, ListItemText } from "@material-ui/core";
 import { FC } from "react";
-import {
-  ListItem,
-  ListItemAvatar,
-  Avatar,
-  ListItemText
-} from "@material-ui/core";
-import AuthorAvatar from "./AuthorAvatar";
+import AuthorAvatar, { AUTHOR_AVATAR_FRAGMENT } from "./AuthorAvatar";
+
+export const COMMENT_ON_CARD_FRAGMENT = gql`
+  fragment CommentOnCard on Comment {
+    id
+    text
+    author {
+      id
+      name
+      ...AuthorAvatar
+    }
+  }
+  ${AUTHOR_AVATAR_FRAGMENT}
+`;
 
 interface CommentCardProps {
   comment: any;
