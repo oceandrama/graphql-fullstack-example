@@ -6,13 +6,15 @@ import {
   CardContent,
   CardHeader,
   IconButton,
+  makeStyles,
+  Theme,
   Typography
 } from "@material-ui/core";
-import { makeStyles, Theme } from "@material-ui/core/styles";
 import ArrowDownwardIcon from "@material-ui/icons/ArrowDownward";
 import ArrowUpwardIcon from "@material-ui/icons/ArrowUpward";
 import Link from "next/link";
 import { FC } from "react";
+import { PostOnCardFragment } from "../lib/types";
 import AuthorAvatar, { AUTHOR_AVATAR_FRAGMENT } from "./AuthorAvatar";
 
 export const POST_ON_CARD_FRAGMENT = gql`
@@ -28,9 +30,7 @@ export const POST_ON_CARD_FRAGMENT = gql`
   ${AUTHOR_AVATAR_FRAGMENT}
 `;
 
-type Post = Record<string, any>;
-
-const useStyles = makeStyles<Theme, Post>({
+const useStyles = makeStyles<Theme, PostOnCardFragment>({
   card: {
     width: "100%"
   },
@@ -41,7 +41,7 @@ const useStyles = makeStyles<Theme, Post>({
 });
 
 interface PostCardProps {
-  post: Post;
+  post: PostOnCardFragment;
 }
 
 const PostCard: FC<PostCardProps> = ({ post }) => {

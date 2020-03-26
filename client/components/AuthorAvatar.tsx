@@ -2,6 +2,7 @@ import { gql } from "@apollo/client";
 import { Avatar, makeStyles } from "@material-ui/core";
 import { deepOrange } from "@material-ui/core/colors";
 import { FC } from "react";
+import { AuthorAvatarFragment } from "../lib/types";
 
 export const AUTHOR_AVATAR_FRAGMENT = gql`
   fragment AuthorAvatar on User {
@@ -11,7 +12,7 @@ export const AUTHOR_AVATAR_FRAGMENT = gql`
 `;
 
 interface AuthorAvatarProps {
-  author: Record<string, any>;
+  author: AuthorAvatarFragment;
 }
 
 const useStyles = makeStyles(theme => ({
