@@ -1,3 +1,4 @@
+import { gql } from "@apollo/client";
 import {
   Button,
   Card,
@@ -12,7 +13,20 @@ import ArrowDownwardIcon from "@material-ui/icons/ArrowDownward";
 import ArrowUpwardIcon from "@material-ui/icons/ArrowUpward";
 import Link from "next/link";
 import { FC } from "react";
-import AuthorAvatar from "./AuthorAvatar";
+import AuthorAvatar, { AUTHOR_AVATAR_FRAGMENT } from "./AuthorAvatar";
+
+export const POST_ON_CARD_FRAGMENT = gql`
+  fragment PostOnCard on Post {
+    id
+    title
+    text
+    createdAt
+    author {
+      ...AuthorAvatar
+    }
+  }
+  ${AUTHOR_AVATAR_FRAGMENT}
+`;
 
 type Post = Record<string, any>;
 

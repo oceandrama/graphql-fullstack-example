@@ -1,21 +1,15 @@
-import { List, ListItem, CircularProgress } from "@material-ui/core";
-import { NextPage } from "next";
-import PostCard from "../components/PostCard";
 import { gql, useQuery } from "@apollo/client";
+import { CircularProgress, List, ListItem } from "@material-ui/core";
+import { NextPage } from "next";
+import PostCard, { POST_ON_CARD_FRAGMENT } from "../components/PostCard";
 
 const GET_POSTS_QUERY = gql`
   query GetPosts {
     posts {
-      id
-      title
-      text
-      createdAt
-      author {
-        id
-        name
-      }
+      ...PostOnCard
     }
   }
+  ${POST_ON_CARD_FRAGMENT}
 `;
 
 const Home: NextPage = () => {
