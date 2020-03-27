@@ -26,5 +26,6 @@ export const Mutation = mutationType({
     });
     t.crud.createOnePost();
     t.crud.createOneComment();
+    t.crud.createOneVote();
   }
 });
