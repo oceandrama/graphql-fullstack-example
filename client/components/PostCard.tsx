@@ -23,6 +23,7 @@ export const POST_ON_CARD_FRAGMENT = gql`
     title
     text
     createdAt
+    rating
     author {
       ...AuthorAvatar
     }
