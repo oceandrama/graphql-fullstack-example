@@ -1,8 +1,13 @@
 import { FC, useState, useCallback, ChangeEvent, FormEvent } from "react";
-import { TextField, Button } from "@material-ui/core";
+import { TextField, Button, Snackbar } from "@material-ui/core";
 import { gql } from "@apollo/client";
 import { POST_ON_CARD_FRAGMENT } from "./PostCard";
-import { useCreatePostMutation } from "../lib/types";
+import {
+  useCreatePostMutation,
+  GetPostsQuery,
+  GetPostsDocument
+} from "../lib/types";
+import Alert from "@material-ui/lab/Alert";
 
 export const CREATE_POST_MUTATION = gql`
   mutation CreatePost($data: PostCreateInput!) {
@@ -18,8 +23,27 @@ const PostCreateForm: FC = () => {
     text: "",
     title: ""
   });
+  const [open, setOpen] = useState(false);
 
-  const [createPost, { loading }] = useCreatePostMutation();
+  const [createPost, { loading, error }] = useCreatePostMutation({
+    update: (store, { data }) => {
+      const cache = store.readQuery<GetPostsQuery>({
+        query: GetPostsDocument
+      });
+
+      if (!cache || !data) return;
+
+      store.writeQuery<GetPostsQuery>({
+        query: GetPostsDocument,
+        data: {
+          ...cache,
+          posts: [data.createOnePost, ...cache.posts]
+        }
+      });
+    },
+    onCompleted: () => setValues({ title: "", text: "" }),
+    onError: () => setOpen(true)
+  });
 
   const handleChange = useCallback(
     (field: keyof typeof values) => (event: ChangeEvent<HTMLInputElement>) => {
@@ -61,9 +85,24 @@ const PostCreateForm: FC = () => {
         multiline
         fullWidth
       />
-      <Button type="submit" variant="contained" color="primary" fullWidth>
+      <Button
+        type="submit"
+        variant="contained"
+        color="primary"
+        disabled={loading}
+        fullWidth
+      >
         Создать
       </Button>
+      <Snackbar
+        open={open}
+        autoHideDuration={3000}
+        onClose={() => setOpen(false)}
+      >
+        <Alert severity="error" variant="filled" elevation={6}>
+          {error?.graphQLErrors[0].message}
+        </Alert>
+      </Snackbar>
     </form>
   );
 };
