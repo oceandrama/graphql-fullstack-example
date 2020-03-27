@@ -6,9 +6,10 @@ import * as Mutation from "./Mutation";
 import * as Post from "./Post";
 import * as Query from "./Query";
 import * as User from "./User";
+import * as Vote from "./Vote";
 
 export default makeSchema({
-  types: [Query, Mutation, Post, User, Comment],
+  types: [Query, Mutation, Post, User, Comment, Vote],
   plugins: [
     nexusPrismaPlugin({
       computedInputs: {
