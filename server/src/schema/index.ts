@@ -9,7 +9,23 @@ import * as User from "./User";
 
 export default makeSchema({
   types: [Query, Mutation, Post, User, Comment],
-  plugins: [nexusPrismaPlugin()],
+  plugins: [
+    nexusPrismaPlugin({
+      computedInputs: {
+        author: ({ ctx: { user } }) => {
+          if (!user) {
+            throw new Error("Вы не авторизованы");
+          }
+
+          return {
+            connect: {
+              id: user.id
+            }
+          };
+        }
+      }
+    })
+  ],
   outputs: {
     typegen: path.join(
       __dirname,

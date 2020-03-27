@@ -24,5 +24,7 @@ export const Mutation = mutationType({
         return user;
       }
     });
+    t.crud.createOnePost();
+    t.crud.createOneComment();
   }
 });
