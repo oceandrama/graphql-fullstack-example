@@ -1,4 +1,4 @@
-import { gql, useQuery } from "@apollo/client";
+import { gql } from "@apollo/client";
 import {
   CircularProgress,
   Divider,
@@ -11,6 +11,7 @@ import CommentCard, {
   COMMENT_ON_CARD_FRAGMENT
 } from "../components/CommentCard";
 import PostCard, { POST_ON_CARD_FRAGMENT } from "../components/PostCard";
+import { useGetPostQuery } from "../lib/types";
 
 const GET_POST_QUERY = gql`
   query GetPost($id: Int!) {
@@ -42,7 +43,7 @@ interface PostDetailProps {
 const PostDetail: NextPage<PostDetailProps> = ({ id }) => {
   const classes = useStyles();
 
-  const { loading, data } = useQuery(GET_POST_QUERY, {
+  const { loading, data } = useGetPostQuery({
     variables: {
       id
     }

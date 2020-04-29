@@ -1,8 +1,9 @@
-import { gql, useQuery } from "@apollo/client";
+import { gql } from "@apollo/client";
 import { CircularProgress, List, ListItem } from "@material-ui/core";
 import { NextPage } from "next";
 import PostCard, { POST_ON_CARD_FRAGMENT } from "../components/PostCard";
 import PostCreateForm from "../components/PostCreateForm";
+import { useGetPostsQuery } from "../lib/types";
 
 const GET_POSTS_QUERY = gql`
   query GetPosts {
@@ -14,7 +15,7 @@ const GET_POSTS_QUERY = gql`
 `;
 
 const Home: NextPage = () => {
-  const { loading, data } = useQuery(GET_POSTS_QUERY);
+  const { loading, data } = useGetPostsQuery();
 
   if (loading && !data) {
     return <CircularProgress />;
