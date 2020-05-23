@@ -14,10 +14,10 @@ async function main() {
           name: "Дмитрий Менделеев",
           email: "mendeley@mail.ru",
           password: await hash("12345", 10),
-          createdAt: new Date("1834-02-08")
-        }
-      }
-    }
+          createdAt: new Date("1834-02-08"),
+        },
+      },
+    },
   });
 
   const mariePost = await db.post.create({
@@ -30,13 +30,30 @@ async function main() {
           name: "Мария Кюри",
           email: "m.curie@mail.pl",
           password: await hash("12345", 10),
-          createdAt: new Date("1867-11-07")
-        }
+          createdAt: new Date("1867-11-07"),
+        },
+      },
+      votes: {
+        create: [{
+          author: {
+            connect: {
+              email: "mendeley@mail.ru"
+            }
+          },
+          direction: "UP",
+        }, {
+          author: {
+            connect: {
+              email: "m.curie@mail.pl"
+            }
+          },
+          direction: "UP",
+        }]
       }
     },
     select: {
-      id: true
-    }
+      id: true,
+    },
   });
 
   await db.comment.create({
@@ -44,18 +61,18 @@ async function main() {
       text: "Мария, ты в курсе, что они радиоактивные?!",
       post: {
         connect: {
-          id: mariePost.id
-        }
+          id: mariePost.id,
+        },
       },
       author: {
         create: {
           name: "Пьер Кюри",
           email: "p.curie@mail.pl",
           password: await hash("12345", 10),
-          createdAt: new Date("1859-05-15")
-        }
-      }
-    }
+          createdAt: new Date("1859-05-15"),
+        },
+      },
+    },
   });
 
   await db.user.create({
@@ -69,12 +86,12 @@ async function main() {
           text: "Мама, когда я вырасту, я тоже буду ученым!",
           post: {
             connect: {
-              id: mariePost.id
-            }
-          }
-        }
-      }
-    }
+              id: mariePost.id,
+            },
+          },
+        },
+      },
+    },
   });
 }
 

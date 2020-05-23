@@ -30,5 +30,5 @@ export const createContext = async (
 ): Promise<Context> => ({
   ...params,
   prisma,
-  user: await getUser(params.request)
+  user: await getUser(params.request),
 });

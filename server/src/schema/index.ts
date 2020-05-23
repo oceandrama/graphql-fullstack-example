@@ -20,30 +20,30 @@ export default makeSchema({
 
           return {
             connect: {
-              id: user.id
-            }
+              id: user.id,
+            },
           };
-        }
-      }
-    })
+        },
+      },
+    }),
   ],
   outputs: {
     typegen: path.join(
       __dirname,
       "../../node_modules/@types/nexus-typegen/index.d.ts"
-    )
+    ),
   },
   typegenAutoConfig: {
     contextType: "Context.Context",
     sources: [
       {
         source: "@prisma/client",
-        alias: "prisma"
+        alias: "prisma",
       },
       {
         source: require.resolve("../context"),
-        alias: "Context"
-      }
-    ]
-  }
+        alias: "Context",
+      },
+    ],
+  },
 });

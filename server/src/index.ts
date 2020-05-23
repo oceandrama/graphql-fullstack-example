@@ -4,15 +4,15 @@ import { createContext } from "./context";
 
 const server = new GraphQLServer({
   schema,
-  context: createContext
+  context: createContext,
 });
 
 server.start(
   {
     cors: {
       origin: "http://localhost:3000",
-      credentials: true
-    }
+      credentials: true,
+    },
   },
   () => console.log(`🚀 Server ready at http://localhost:4000`)
 );

@@ -7,18 +7,20 @@ export const Post = objectType({
     t.model.title();
     t.model.text();
     t.model.createdAt();
+
     t.model.author();
     t.model.comments();
     t.model.votes();
+
     t.field("rating", {
       type: "Int",
       resolve: async ({ id }, _args, { prisma }) => {
         const votes = await prisma.vote.findMany({
           where: {
             post: {
-              id
-            }
-          }
+              id,
+            },
+          },
         });
 
         return votes.reduce((rating, vote) => {
@@ -29,7 +31,7 @@ export const Post = objectType({
               return (rating -= 1);
           }
         }, 0);
-      }
+      },
     });
-  }
+  },
 });

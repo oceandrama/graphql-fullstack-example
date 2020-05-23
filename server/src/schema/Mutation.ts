@@ -8,7 +8,7 @@ export const Mutation = mutationType({
       type: "User",
       args: {
         email: stringArg({ required: true }),
-        password: stringArg({ required: true })
+        password: stringArg({ required: true }),
       },
       resolve: async (_parent, { email, password }, { prisma, response }) => {
         const user = await prisma.user.findOne({ where: { email } });
@@ -22,10 +22,18 @@ export const Mutation = mutationType({
         response.cookie("auth.token", token, { httpOnly: true });
 
         return user;
-      }
+      },
     });
     t.crud.createOnePost();
+    t.crud.updateOnePost();
+    t.crud.deleteOnePost();
+
     t.crud.createOneComment();
+    t.crud.updateOneComment();
+    t.crud.deleteOneComment();
+
     t.crud.createOneVote();
-  }
+    t.crud.updateOneVote();
+    t.crud.deleteOneVote();
+  },
 });
