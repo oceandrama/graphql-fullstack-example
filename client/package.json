@@ -9,24 +9,23 @@
     "generate": "graphql-codegen"
   },
   "dependencies": {
-    "@apollo/client": "^3.0.0-beta.44",
+    "@apollo/client": "^3.0.0-rc.4",
     "@apollo/react-ssr": "^4.0.0-beta.1",
-    "@material-ui/core": "^4.9.12",
+    "@material-ui/core": "^4.10.2",
     "@material-ui/icons": "^4.9.1",
-    "@material-ui/lab": "^4.0.0-alpha.51",
-    "graphql": "^15.0.0",
-    "isomorphic-unfetch": "^3.0.0",
-    "next": "^9.3.6",
+    "@material-ui/lab": "^4.0.0-alpha.56",
+    "graphql": "^15.1.0",
+    "next": "^9.4.4",
     "react": "^16.13.1",
     "react-dom": "^16.13.1"
   },
   "devDependencies": {
-    "@graphql-codegen/cli": "^1.13.3",
-    "@graphql-codegen/typescript": "^1.13.3",
-    "@graphql-codegen/typescript-operations": "^1.13.3",
-    "@graphql-codegen/typescript-react-apollo": "^1.13.3",
-    "@types/node": "^13.13.4",
-    "@types/react": "^16.9.34",
-    "typescript": "^3.8.3"
+    "@graphql-codegen/cli": "^1.15.3",
+    "@graphql-codegen/typescript": "^1.15.3",
+    "@graphql-codegen/typescript-operations": "^1.15.3",
+    "@graphql-codegen/typescript-react-apollo": "^1.15.3",
+    "@types/node": "^14.0.13",
+    "@types/react": "^16.9.36",
+    "typescript": "^3.9.5"
   }
 }

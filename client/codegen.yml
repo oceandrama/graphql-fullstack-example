@@ -10,7 +10,7 @@ generates:
       - "typescript-operations"
       - "typescript-react-apollo"
     config:
-      gqlImport: @apollo/client#gql
+      gqlImport: "@apollo/client#gql"
       maybeValue: T | null | undefined
       reactApolloVersion: 3
       scalars:

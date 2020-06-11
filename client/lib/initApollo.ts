@@ -5,7 +5,6 @@ import {
   InMemoryCache,
   NormalizedCacheObject
 } from "@apollo/client";
-import fetch from "isomorphic-unfetch";
 import { NextPageContext } from "next";
 
 const create = (initialState: NormalizedCacheObject, ctx?: NextPageContext) => {
@@ -14,8 +13,7 @@ const create = (initialState: NormalizedCacheObject, ctx?: NextPageContext) => {
   const httpLink = new HttpLink({
     headers: ctx?.req?.headers,
     uri: "http://localhost:4000",
-    credentials: "include",
-    fetch
+    credentials: "include"
   });
 
   const client = new ApolloClient({
