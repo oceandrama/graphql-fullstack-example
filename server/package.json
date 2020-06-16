@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "ts-node src/index.ts",
     "generate": "prisma generate && ts-node --transpile-only src/schema",
+    "migrate": "prisma migrate save --experimental && prisma migrate up --experimental",
     "seed": "ts-node prisma/seed.ts"
   },
   "dependencies": {
