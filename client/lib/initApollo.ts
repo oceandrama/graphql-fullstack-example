@@ -1,9 +1,8 @@
 import {
   ApolloClient,
-  ApolloLink,
   HttpLink,
   InMemoryCache,
-  NormalizedCacheObject
+  NormalizedCacheObject,
 } from "@apollo/client";
 import { NextPageContext } from "next";
 
@@ -13,14 +12,14 @@ const create = (initialState: NormalizedCacheObject, ctx?: NextPageContext) => {
   const httpLink = new HttpLink({
     headers: ctx?.req?.headers,
     uri: "http://localhost:4000",
-    credentials: "include"
+    credentials: "include",
   });
 
   const client = new ApolloClient({
     connectToDevTools: isBrowser,
     ssrMode: !isBrowser, // Выключаем forceFetch на сервере, так что все запросы выполнятся один раз
     link: httpLink,
-    cache: new InMemoryCache().restore(initialState)
+    cache: new InMemoryCache().restore(initialState),
   });
 
   return client;

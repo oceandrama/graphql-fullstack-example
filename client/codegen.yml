@@ -1,23 +1,18 @@
 overwrite: true
-schema: "http://localhost:4000"
+schema: http://localhost:4000
 documents:
-  - "components/**/*.tsx"
-  - "pages/**/*.tsx"
+  - components/**/*.tsx
+  - pages/**/*.tsx
 generates:
   lib/types.ts:
     plugins:
-      - "typescript"
-      - "typescript-operations"
-      - "typescript-react-apollo"
+      - typescript
+      - typescript-operations
+      - typescript-react-apollo
     config:
-      gqlImport: "@apollo/client#gql"
       maybeValue: T | null | undefined
-      reactApolloVersion: 3
       scalars:
         DateTime: string
-      withComponent: false
-      withHOC: false
-      withHooks: true
       withMutationFn: false
       withMutationOptionsType: false
       withResultType: false

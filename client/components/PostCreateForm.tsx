@@ -1,13 +1,12 @@
-import { FC, useState, useCallback, ChangeEvent, FormEvent } from "react";
-import { TextField, Button, Snackbar } from "@material-ui/core";
 import { gql } from "@apollo/client";
-import { POST_ON_CARD_FRAGMENT } from "./PostCard";
+import { Button, Snackbar, TextField, Alert } from "@material-ui/core";
+import { ChangeEvent, FC, FormEvent, useCallback, useState } from "react";
 import {
-  useCreatePostMutation,
+  GetPostsDocument,
   GetPostsQuery,
-  GetPostsDocument
+  useCreatePostMutation,
 } from "../lib/types";
-import Alert from "@material-ui/lab/Alert";
+import { POST_ON_CARD_FRAGMENT } from "./PostCard";
 
 export const CREATE_POST_MUTATION = gql`
   mutation CreatePost($data: PostCreateInput!) {
@@ -21,14 +20,16 @@ export const CREATE_POST_MUTATION = gql`
 const PostCreateForm: FC = () => {
   const [values, setValues] = useState({
     text: "",
-    title: ""
+    title: "",
   });
+
   const [open, setOpen] = useState(false);
+  const handleClose = () => setOpen(false);
 
   const [createPost, { loading, error }] = useCreatePostMutation({
     update: (store, { data }) => {
       const cache = store.readQuery<GetPostsQuery>({
-        query: GetPostsDocument
+        query: GetPostsDocument,
       });
 
       if (!cache || !data) return;
@@ -37,12 +38,12 @@ const PostCreateForm: FC = () => {
         query: GetPostsDocument,
         data: {
           ...cache,
-          posts: [data.createOnePost, ...cache.posts]
-        }
+          posts: [data.createOnePost, ...cache.posts],
+        },
       });
     },
     onCompleted: () => setValues({ title: "", text: "" }),
-    onError: () => setOpen(true)
+    onError: () => setOpen(true),
   });
 
   const handleChange = useCallback(
@@ -58,8 +59,8 @@ const PostCreateForm: FC = () => {
 
       createPost({
         variables: {
-          data: values
-        }
+          data: values,
+        },
       });
     },
     [values]
@@ -94,12 +95,13 @@ const PostCreateForm: FC = () => {
       >
         Создать
       </Button>
-      <Snackbar
-        open={open}
-        autoHideDuration={3000}
-        onClose={() => setOpen(false)}
-      >
-        <Alert severity="error" variant="filled" elevation={6}>
+      <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+        <Alert
+          severity="error"
+          variant="filled"
+          elevation={6}
+          onClose={handleClose}
+        >
           {error?.graphQLErrors[0].message}
         </Alert>
       </Snackbar>

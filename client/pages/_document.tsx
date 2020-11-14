@@ -1,11 +1,11 @@
 import { ServerStyleSheets } from "@material-ui/core";
-import Document, { Head, Main, NextScript } from "next/document";
+import Document, { Head, Html, Main, NextScript } from "next/document";
 import { Children } from "react";
 
 export default class MyDocument extends Document {
   render() {
     return (
-      <html lang="ru">
+      <Html lang="ru">
         <Head>
           <link
             rel="stylesheet"
@@ -16,24 +16,27 @@ export default class MyDocument extends Document {
           <Main />
           <NextScript />
         </body>
-      </html>
+      </Html>
     );
   }
 }
 
-MyDocument.getInitialProps = async ctx => {
+MyDocument.getInitialProps = async (ctx) => {
   const sheets = new ServerStyleSheets();
   const originalRenderPage = ctx.renderPage;
 
   ctx.renderPage = () =>
     originalRenderPage({
-      enhanceApp: App => props => sheets.collect(<App {...props} />)
+      enhanceApp: (App) => (props) => sheets.collect(<App {...props} />),
     });
 
   const initialProps = await Document.getInitialProps(ctx);
 
   return {
     ...initialProps,
-    styles: [...Children.toArray(initialProps.styles), sheets.getStyleElement()]
+    styles: [
+      ...Children.toArray(initialProps.styles),
+      sheets.getStyleElement(),
+    ],
   };
 };

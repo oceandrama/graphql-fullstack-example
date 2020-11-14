@@ -1,7 +1,9 @@
 import { gql } from "@apollo/client";
-import * as ApolloReactHooks from "@apollo/client";
+import * as Apollo from "@apollo/client";
 export type Maybe<T> = T | null | undefined;
-export type Exact<T extends { [key: string]: any }> = { [K in keyof T]: T[K] };
+export type Exact<T extends { [key: string]: unknown }> = {
+  [K in keyof T]: T[K];
+};
 /** All built-in and custom scalars, mapped to their actual values */
 export type Scalars = {
   ID: string;
@@ -30,12 +32,10 @@ export type QueryCommentArgs = {
 
 export type QueryCommentsArgs = {
   where?: Maybe<CommentWhereInput>;
-  orderBy?: Maybe<CommentOrderByInput>;
+  orderBy?: Maybe<Array<CommentOrderByInput>>;
+  take?: Maybe<Scalars["Int"]>;
   skip?: Maybe<Scalars["Int"]>;
-  after?: Maybe<CommentWhereUniqueInput>;
-  before?: Maybe<CommentWhereUniqueInput>;
-  first?: Maybe<Scalars["Int"]>;
-  last?: Maybe<Scalars["Int"]>;
+  cursor?: Maybe<CommentWhereUniqueInput>;
 };
 
 export type QueryPostArgs = {
@@ -44,12 +44,10 @@ export type QueryPostArgs = {
 
 export type QueryPostsArgs = {
   where?: Maybe<PostWhereInput>;
-  orderBy?: Maybe<PostOrderByInput>;
+  orderBy?: Maybe<Array<PostOrderByInput>>;
+  take?: Maybe<Scalars["Int"]>;
   skip?: Maybe<Scalars["Int"]>;
-  after?: Maybe<PostWhereUniqueInput>;
-  before?: Maybe<PostWhereUniqueInput>;
-  first?: Maybe<Scalars["Int"]>;
-  last?: Maybe<Scalars["Int"]>;
+  cursor?: Maybe<PostWhereUniqueInput>;
 };
 
 export type QueryUserArgs = {
@@ -58,12 +56,10 @@ export type QueryUserArgs = {
 
 export type QueryUsersArgs = {
   where?: Maybe<UserWhereInput>;
-  orderBy?: Maybe<UserOrderByInput>;
+  orderBy?: Maybe<Array<UserOrderByInput>>;
+  take?: Maybe<Scalars["Int"]>;
   skip?: Maybe<Scalars["Int"]>;
-  after?: Maybe<UserWhereUniqueInput>;
-  before?: Maybe<UserWhereUniqueInput>;
-  first?: Maybe<Scalars["Int"]>;
-  last?: Maybe<Scalars["Int"]>;
+  cursor?: Maybe<UserWhereUniqueInput>;
 };
 
 export type QueryVoteArgs = {
@@ -72,12 +68,10 @@ export type QueryVoteArgs = {
 
 export type QueryVotesArgs = {
   where?: Maybe<VoteWhereInput>;
-  orderBy?: Maybe<VoteOrderByInput>;
+  orderBy?: Maybe<Array<VoteOrderByInput>>;
+  take?: Maybe<Scalars["Int"]>;
   skip?: Maybe<Scalars["Int"]>;
-  after?: Maybe<VoteWhereUniqueInput>;
-  before?: Maybe<VoteWhereUniqueInput>;
-  first?: Maybe<Scalars["Int"]>;
-  last?: Maybe<Scalars["Int"]>;
+  cursor?: Maybe<VoteWhereUniqueInput>;
 };
 
 export type CommentWhereUniqueInput = {
@@ -104,27 +98,21 @@ export type User = {
 };
 
 export type UserCommentsArgs = {
+  take?: Maybe<Scalars["Int"]>;
   skip?: Maybe<Scalars["Int"]>;
-  after?: Maybe<CommentWhereUniqueInput>;
-  before?: Maybe<CommentWhereUniqueInput>;
-  first?: Maybe<Scalars["Int"]>;
-  last?: Maybe<Scalars["Int"]>;
+  cursor?: Maybe<CommentWhereUniqueInput>;
 };
 
 export type UserPostsArgs = {
+  take?: Maybe<Scalars["Int"]>;
   skip?: Maybe<Scalars["Int"]>;
-  after?: Maybe<PostWhereUniqueInput>;
-  before?: Maybe<PostWhereUniqueInput>;
-  first?: Maybe<Scalars["Int"]>;
-  last?: Maybe<Scalars["Int"]>;
+  cursor?: Maybe<PostWhereUniqueInput>;
 };
 
 export type UserVotesArgs = {
+  take?: Maybe<Scalars["Int"]>;
   skip?: Maybe<Scalars["Int"]>;
-  after?: Maybe<VoteWhereUniqueInput>;
-  before?: Maybe<VoteWhereUniqueInput>;
-  first?: Maybe<Scalars["Int"]>;
-  last?: Maybe<Scalars["Int"]>;
+  cursor?: Maybe<VoteWhereUniqueInput>;
 };
 
 export type PostWhereUniqueInput = {
@@ -140,23 +128,19 @@ export type Post = {
   author: User;
   comments: Array<Comment>;
   votes: Array<Vote>;
-  rating: Scalars["Int"];
+  rating?: Maybe<Scalars["Int"]>;
 };
 
 export type PostCommentsArgs = {
+  take?: Maybe<Scalars["Int"]>;
   skip?: Maybe<Scalars["Int"]>;
-  after?: Maybe<CommentWhereUniqueInput>;
-  before?: Maybe<CommentWhereUniqueInput>;
-  first?: Maybe<Scalars["Int"]>;
-  last?: Maybe<Scalars["Int"]>;
+  cursor?: Maybe<CommentWhereUniqueInput>;
 };
 
 export type PostVotesArgs = {
+  take?: Maybe<Scalars["Int"]>;
   skip?: Maybe<Scalars["Int"]>;
-  after?: Maybe<VoteWhereUniqueInput>;
-  before?: Maybe<VoteWhereUniqueInput>;
-  first?: Maybe<Scalars["Int"]>;
-  last?: Maybe<Scalars["Int"]>;
+  cursor?: Maybe<VoteWhereUniqueInput>;
 };
 
 export type VoteWhereUniqueInput = {
@@ -170,9 +154,9 @@ export type AuthorIdPostIdCompoundUniqueInput = {
 
 export type Vote = {
   __typename?: "Vote";
-  authorId: Scalars["Int"];
-  postId: Scalars["Int"];
-  direction: Direction;
+  authorId?: Maybe<Scalars["Int"]>;
+  postId?: Maybe<Scalars["Int"]>;
+  direction?: Maybe<Direction>;
   author?: Maybe<User>;
   post?: Maybe<Post>;
 };
@@ -183,46 +167,67 @@ export enum Direction {
 }
 
 export type CommentWhereInput = {
+  AND?: Maybe<Array<CommentWhereInput>>;
+  OR?: Maybe<Array<CommentWhereInput>>;
+  NOT?: Maybe<Array<CommentWhereInput>>;
   id?: Maybe<IntFilter>;
   createdAt?: Maybe<DateTimeFilter>;
   updatedAt?: Maybe<DateTimeFilter>;
   text?: Maybe<StringFilter>;
   authorId?: Maybe<IntFilter>;
   postId?: Maybe<IntFilter>;
-  replyToId?: Maybe<NullableIntFilter>;
-  replies?: Maybe<CommentFilter>;
-  AND?: Maybe<Array<CommentWhereInput>>;
-  OR?: Maybe<Array<CommentWhereInput>>;
-  NOT?: Maybe<Array<CommentWhereInput>>;
+  replyToId?: Maybe<IntNullableFilter>;
   post?: Maybe<PostWhereInput>;
   replyTo?: Maybe<CommentWhereInput>;
+  replies?: Maybe<CommentListRelationFilter>;
 };
 
 export type IntFilter = {
   equals?: Maybe<Scalars["Int"]>;
-  not?: Maybe<Scalars["Int"]>;
   in?: Maybe<Array<Scalars["Int"]>>;
   notIn?: Maybe<Array<Scalars["Int"]>>;
   lt?: Maybe<Scalars["Int"]>;
   lte?: Maybe<Scalars["Int"]>;
   gt?: Maybe<Scalars["Int"]>;
   gte?: Maybe<Scalars["Int"]>;
+  not?: Maybe<NestedIntFilter>;
+};
+
+export type NestedIntFilter = {
+  equals?: Maybe<Scalars["Int"]>;
+  in?: Maybe<Array<Scalars["Int"]>>;
+  notIn?: Maybe<Array<Scalars["Int"]>>;
+  lt?: Maybe<Scalars["Int"]>;
+  lte?: Maybe<Scalars["Int"]>;
+  gt?: Maybe<Scalars["Int"]>;
+  gte?: Maybe<Scalars["Int"]>;
+  not?: Maybe<NestedIntFilter>;
 };
 
 export type DateTimeFilter = {
   equals?: Maybe<Scalars["DateTime"]>;
-  not?: Maybe<Scalars["DateTime"]>;
   in?: Maybe<Array<Scalars["DateTime"]>>;
   notIn?: Maybe<Array<Scalars["DateTime"]>>;
   lt?: Maybe<Scalars["DateTime"]>;
   lte?: Maybe<Scalars["DateTime"]>;
   gt?: Maybe<Scalars["DateTime"]>;
   gte?: Maybe<Scalars["DateTime"]>;
+  not?: Maybe<NestedDateTimeFilter>;
+};
+
+export type NestedDateTimeFilter = {
+  equals?: Maybe<Scalars["DateTime"]>;
+  in?: Maybe<Array<Scalars["DateTime"]>>;
+  notIn?: Maybe<Array<Scalars["DateTime"]>>;
+  lt?: Maybe<Scalars["DateTime"]>;
+  lte?: Maybe<Scalars["DateTime"]>;
+  gt?: Maybe<Scalars["DateTime"]>;
+  gte?: Maybe<Scalars["DateTime"]>;
+  not?: Maybe<NestedDateTimeFilter>;
 };
 
 export type StringFilter = {
   equals?: Maybe<Scalars["String"]>;
-  not?: Maybe<Scalars["String"]>;
   in?: Maybe<Array<Scalars["String"]>>;
   notIn?: Maybe<Array<Scalars["String"]>>;
   lt?: Maybe<Scalars["String"]>;
@@ -232,42 +237,67 @@ export type StringFilter = {
   contains?: Maybe<Scalars["String"]>;
   startsWith?: Maybe<Scalars["String"]>;
   endsWith?: Maybe<Scalars["String"]>;
+  mode?: Maybe<QueryMode>;
+  not?: Maybe<NestedStringFilter>;
 };
 
-export type NullableIntFilter = {
+export enum QueryMode {
+  Default = "default",
+  Insensitive = "insensitive",
+}
+
+export type NestedStringFilter = {
+  equals?: Maybe<Scalars["String"]>;
+  in?: Maybe<Array<Scalars["String"]>>;
+  notIn?: Maybe<Array<Scalars["String"]>>;
+  lt?: Maybe<Scalars["String"]>;
+  lte?: Maybe<Scalars["String"]>;
+  gt?: Maybe<Scalars["String"]>;
+  gte?: Maybe<Scalars["String"]>;
+  contains?: Maybe<Scalars["String"]>;
+  startsWith?: Maybe<Scalars["String"]>;
+  endsWith?: Maybe<Scalars["String"]>;
+  not?: Maybe<NestedStringFilter>;
+};
+
+export type IntNullableFilter = {
   equals?: Maybe<Scalars["Int"]>;
-  not?: Maybe<Scalars["Int"]>;
   in?: Maybe<Array<Scalars["Int"]>>;
   notIn?: Maybe<Array<Scalars["Int"]>>;
   lt?: Maybe<Scalars["Int"]>;
   lte?: Maybe<Scalars["Int"]>;
   gt?: Maybe<Scalars["Int"]>;
   gte?: Maybe<Scalars["Int"]>;
+  not?: Maybe<NestedIntNullableFilter>;
 };
 
-export type CommentFilter = {
-  every?: Maybe<CommentWhereInput>;
-  some?: Maybe<CommentWhereInput>;
-  none?: Maybe<CommentWhereInput>;
+export type NestedIntNullableFilter = {
+  equals?: Maybe<Scalars["Int"]>;
+  in?: Maybe<Array<Scalars["Int"]>>;
+  notIn?: Maybe<Array<Scalars["Int"]>>;
+  lt?: Maybe<Scalars["Int"]>;
+  lte?: Maybe<Scalars["Int"]>;
+  gt?: Maybe<Scalars["Int"]>;
+  gte?: Maybe<Scalars["Int"]>;
+  not?: Maybe<NestedIntNullableFilter>;
 };
 
 export type PostWhereInput = {
+  AND?: Maybe<Array<PostWhereInput>>;
+  OR?: Maybe<Array<PostWhereInput>>;
+  NOT?: Maybe<Array<PostWhereInput>>;
   id?: Maybe<IntFilter>;
   createdAt?: Maybe<DateTimeFilter>;
   updatedAt?: Maybe<DateTimeFilter>;
   title?: Maybe<StringFilter>;
-  text?: Maybe<NullableStringFilter>;
+  text?: Maybe<StringNullableFilter>;
   authorId?: Maybe<IntFilter>;
-  comments?: Maybe<CommentFilter>;
-  votes?: Maybe<VoteFilter>;
-  AND?: Maybe<Array<PostWhereInput>>;
-  OR?: Maybe<Array<PostWhereInput>>;
-  NOT?: Maybe<Array<PostWhereInput>>;
+  comments?: Maybe<CommentListRelationFilter>;
+  votes?: Maybe<VoteListRelationFilter>;
 };
 
-export type NullableStringFilter = {
+export type StringNullableFilter = {
   equals?: Maybe<Scalars["String"]>;
-  not?: Maybe<Scalars["String"]>;
   in?: Maybe<Array<Scalars["String"]>>;
   notIn?: Maybe<Array<Scalars["String"]>>;
   lt?: Maybe<Scalars["String"]>;
@@ -277,46 +307,82 @@ export type NullableStringFilter = {
   contains?: Maybe<Scalars["String"]>;
   startsWith?: Maybe<Scalars["String"]>;
   endsWith?: Maybe<Scalars["String"]>;
+  mode?: Maybe<QueryMode>;
+  not?: Maybe<NestedStringNullableFilter>;
 };
 
-export type VoteFilter = {
+export type NestedStringNullableFilter = {
+  equals?: Maybe<Scalars["String"]>;
+  in?: Maybe<Array<Scalars["String"]>>;
+  notIn?: Maybe<Array<Scalars["String"]>>;
+  lt?: Maybe<Scalars["String"]>;
+  lte?: Maybe<Scalars["String"]>;
+  gt?: Maybe<Scalars["String"]>;
+  gte?: Maybe<Scalars["String"]>;
+  contains?: Maybe<Scalars["String"]>;
+  startsWith?: Maybe<Scalars["String"]>;
+  endsWith?: Maybe<Scalars["String"]>;
+  not?: Maybe<NestedStringNullableFilter>;
+};
+
+export type CommentListRelationFilter = {
+  every?: Maybe<CommentWhereInput>;
+  some?: Maybe<CommentWhereInput>;
+  none?: Maybe<CommentWhereInput>;
+};
+
+export type VoteListRelationFilter = {
   every?: Maybe<VoteWhereInput>;
   some?: Maybe<VoteWhereInput>;
   none?: Maybe<VoteWhereInput>;
 };
 
 export type VoteWhereInput = {
-  authorId?: Maybe<IntFilter>;
-  postId?: Maybe<IntFilter>;
-  direction?: Maybe<Direction>;
   AND?: Maybe<Array<VoteWhereInput>>;
   OR?: Maybe<Array<VoteWhereInput>>;
   NOT?: Maybe<Array<VoteWhereInput>>;
+  authorId?: Maybe<IntFilter>;
+  postId?: Maybe<IntFilter>;
+  direction?: Maybe<EnumDirectionFilter>;
   post?: Maybe<PostWhereInput>;
 };
 
-export type CommentOrderByInput = {
-  id?: Maybe<OrderByArg>;
-  createdAt?: Maybe<OrderByArg>;
-  updatedAt?: Maybe<OrderByArg>;
-  text?: Maybe<OrderByArg>;
-  authorId?: Maybe<OrderByArg>;
-  postId?: Maybe<OrderByArg>;
-  replyToId?: Maybe<OrderByArg>;
+export type EnumDirectionFilter = {
+  equals?: Maybe<Direction>;
+  in?: Maybe<Array<Direction>>;
+  notIn?: Maybe<Array<Direction>>;
+  not?: Maybe<NestedEnumDirectionFilter>;
 };
 
-export enum OrderByArg {
+export type NestedEnumDirectionFilter = {
+  equals?: Maybe<Direction>;
+  in?: Maybe<Array<Direction>>;
+  notIn?: Maybe<Array<Direction>>;
+  not?: Maybe<NestedEnumDirectionFilter>;
+};
+
+export type CommentOrderByInput = {
+  id?: Maybe<SortOrder>;
+  createdAt?: Maybe<SortOrder>;
+  updatedAt?: Maybe<SortOrder>;
+  text?: Maybe<SortOrder>;
+  authorId?: Maybe<SortOrder>;
+  postId?: Maybe<SortOrder>;
+  replyToId?: Maybe<SortOrder>;
+};
+
+export enum SortOrder {
   Asc = "asc",
   Desc = "desc",
 }
 
 export type PostOrderByInput = {
-  id?: Maybe<OrderByArg>;
-  createdAt?: Maybe<OrderByArg>;
-  updatedAt?: Maybe<OrderByArg>;
-  title?: Maybe<OrderByArg>;
-  text?: Maybe<OrderByArg>;
-  authorId?: Maybe<OrderByArg>;
+  id?: Maybe<SortOrder>;
+  createdAt?: Maybe<SortOrder>;
+  updatedAt?: Maybe<SortOrder>;
+  title?: Maybe<SortOrder>;
+  text?: Maybe<SortOrder>;
+  authorId?: Maybe<SortOrder>;
 };
 
 export type UserWhereUniqueInput = {
@@ -325,44 +391,44 @@ export type UserWhereUniqueInput = {
 };
 
 export type UserWhereInput = {
-  id?: Maybe<IntFilter>;
-  createdAt?: Maybe<DateTimeFilter>;
-  updatedAt?: Maybe<DateTimeFilter>;
-  name?: Maybe<NullableStringFilter>;
-  email?: Maybe<StringFilter>;
-  password?: Maybe<StringFilter>;
-  posts?: Maybe<PostFilter>;
-  comments?: Maybe<CommentFilter>;
-  votes?: Maybe<VoteFilter>;
   AND?: Maybe<Array<UserWhereInput>>;
   OR?: Maybe<Array<UserWhereInput>>;
   NOT?: Maybe<Array<UserWhereInput>>;
+  id?: Maybe<IntFilter>;
+  createdAt?: Maybe<DateTimeFilter>;
+  updatedAt?: Maybe<DateTimeFilter>;
+  name?: Maybe<StringNullableFilter>;
+  email?: Maybe<StringFilter>;
+  password?: Maybe<StringFilter>;
+  posts?: Maybe<PostListRelationFilter>;
+  comments?: Maybe<CommentListRelationFilter>;
+  votes?: Maybe<VoteListRelationFilter>;
 };
 
-export type PostFilter = {
+export type PostListRelationFilter = {
   every?: Maybe<PostWhereInput>;
   some?: Maybe<PostWhereInput>;
   none?: Maybe<PostWhereInput>;
 };
 
 export type UserOrderByInput = {
-  id?: Maybe<OrderByArg>;
-  createdAt?: Maybe<OrderByArg>;
-  updatedAt?: Maybe<OrderByArg>;
-  name?: Maybe<OrderByArg>;
-  email?: Maybe<OrderByArg>;
-  password?: Maybe<OrderByArg>;
+  id?: Maybe<SortOrder>;
+  createdAt?: Maybe<SortOrder>;
+  updatedAt?: Maybe<SortOrder>;
+  name?: Maybe<SortOrder>;
+  email?: Maybe<SortOrder>;
+  password?: Maybe<SortOrder>;
 };
 
 export type VoteOrderByInput = {
-  authorId?: Maybe<OrderByArg>;
-  postId?: Maybe<OrderByArg>;
-  direction?: Maybe<OrderByArg>;
+  authorId?: Maybe<SortOrder>;
+  postId?: Maybe<SortOrder>;
+  direction?: Maybe<SortOrder>;
 };
 
 export type Mutation = {
   __typename?: "Mutation";
-  login: User;
+  login?: Maybe<User>;
   createOnePost: Post;
   updateOnePost?: Maybe<Post>;
   deleteOnePost?: Maybe<Post>;
@@ -430,6 +496,7 @@ export type PostCreateInput = {
 export type CommentCreateManyWithoutPostInput = {
   create?: Maybe<Array<CommentCreateWithoutPostInput>>;
   connect?: Maybe<Array<CommentWhereUniqueInput>>;
+  connectOrCreate?: Maybe<Array<CommentCreateOrConnectWithoutpostInput>>;
 };
 
 export type CommentCreateWithoutPostInput = {
@@ -443,6 +510,7 @@ export type CommentCreateWithoutPostInput = {
 export type CommentCreateOneWithoutRepliesInput = {
   create?: Maybe<CommentCreateWithoutRepliesInput>;
   connect?: Maybe<CommentWhereUniqueInput>;
+  connectOrCreate?: Maybe<CommentCreateOrConnectWithoutrepliesInput>;
 };
 
 export type CommentCreateWithoutRepliesInput = {
@@ -456,6 +524,7 @@ export type CommentCreateWithoutRepliesInput = {
 export type PostCreateOneWithoutCommentsInput = {
   create?: Maybe<PostCreateWithoutCommentsInput>;
   connect?: Maybe<PostWhereUniqueInput>;
+  connectOrCreate?: Maybe<PostCreateOrConnectWithoutcommentsInput>;
 };
 
 export type PostCreateWithoutCommentsInput = {
@@ -469,15 +538,32 @@ export type PostCreateWithoutCommentsInput = {
 export type VoteCreateManyWithoutPostInput = {
   create?: Maybe<Array<VoteCreateWithoutPostInput>>;
   connect?: Maybe<Array<VoteWhereUniqueInput>>;
+  connectOrCreate?: Maybe<Array<VoteCreateOrConnectWithoutpostInput>>;
 };
 
 export type VoteCreateWithoutPostInput = {
   direction: Direction;
 };
 
+export type VoteCreateOrConnectWithoutpostInput = {
+  where: VoteWhereUniqueInput;
+  create: VoteCreateWithoutPostInput;
+};
+
+export type PostCreateOrConnectWithoutcommentsInput = {
+  where: PostWhereUniqueInput;
+  create: PostCreateWithoutCommentsInput;
+};
+
+export type CommentCreateOrConnectWithoutrepliesInput = {
+  where: CommentWhereUniqueInput;
+  create: CommentCreateWithoutRepliesInput;
+};
+
 export type CommentCreateManyWithoutReplyToInput = {
   create?: Maybe<Array<CommentCreateWithoutReplyToInput>>;
   connect?: Maybe<Array<CommentWhereUniqueInput>>;
+  connectOrCreate?: Maybe<Array<CommentCreateOrConnectWithoutreplyToInput>>;
 };
 
 export type CommentCreateWithoutReplyToInput = {
@@ -488,14 +574,35 @@ export type CommentCreateWithoutReplyToInput = {
   replies?: Maybe<CommentCreateManyWithoutReplyToInput>;
 };
 
+export type CommentCreateOrConnectWithoutreplyToInput = {
+  where: CommentWhereUniqueInput;
+  create: CommentCreateWithoutReplyToInput;
+};
+
+export type CommentCreateOrConnectWithoutpostInput = {
+  where: CommentWhereUniqueInput;
+  create: CommentCreateWithoutPostInput;
+};
+
 export type PostUpdateInput = {
-  id?: Maybe<Scalars["Int"]>;
-  createdAt?: Maybe<Scalars["DateTime"]>;
-  updatedAt?: Maybe<Scalars["DateTime"]>;
-  title?: Maybe<Scalars["String"]>;
-  text?: Maybe<Scalars["String"]>;
+  createdAt?: Maybe<DateTimeFieldUpdateOperationsInput>;
+  updatedAt?: Maybe<DateTimeFieldUpdateOperationsInput>;
+  title?: Maybe<StringFieldUpdateOperationsInput>;
+  text?: Maybe<NullableStringFieldUpdateOperationsInput>;
   comments?: Maybe<CommentUpdateManyWithoutPostInput>;
   votes?: Maybe<VoteUpdateManyWithoutPostInput>;
+};
+
+export type DateTimeFieldUpdateOperationsInput = {
+  set?: Maybe<Scalars["DateTime"]>;
+};
+
+export type StringFieldUpdateOperationsInput = {
+  set?: Maybe<Scalars["String"]>;
+};
+
+export type NullableStringFieldUpdateOperationsInput = {
+  set?: Maybe<Scalars["String"]>;
 };
 
 export type CommentUpdateManyWithoutPostInput = {
@@ -505,21 +612,21 @@ export type CommentUpdateManyWithoutPostInput = {
   disconnect?: Maybe<Array<CommentWhereUniqueInput>>;
   delete?: Maybe<Array<CommentWhereUniqueInput>>;
   update?: Maybe<Array<CommentUpdateWithWhereUniqueWithoutPostInput>>;
-  updateMany?: Maybe<Array<CommentUpdateManyWithWhereNestedInput>>;
+  updateMany?: Maybe<Array<CommentUpdateManyWithWhereWithoutPostInput>>;
   deleteMany?: Maybe<Array<CommentScalarWhereInput>>;
   upsert?: Maybe<Array<CommentUpsertWithWhereUniqueWithoutPostInput>>;
+  connectOrCreate?: Maybe<Array<CommentCreateOrConnectWithoutpostInput>>;
 };
 
 export type CommentUpdateWithWhereUniqueWithoutPostInput = {
   where: CommentWhereUniqueInput;
-  data: CommentUpdateWithoutPostDataInput;
+  data: CommentUpdateWithoutPostInput;
 };
 
-export type CommentUpdateWithoutPostDataInput = {
-  id?: Maybe<Scalars["Int"]>;
-  createdAt?: Maybe<Scalars["DateTime"]>;
-  updatedAt?: Maybe<Scalars["DateTime"]>;
-  text?: Maybe<Scalars["String"]>;
+export type CommentUpdateWithoutPostInput = {
+  createdAt?: Maybe<DateTimeFieldUpdateOperationsInput>;
+  updatedAt?: Maybe<DateTimeFieldUpdateOperationsInput>;
+  text?: Maybe<StringFieldUpdateOperationsInput>;
   replyTo?: Maybe<CommentUpdateOneWithoutRepliesInput>;
   replies?: Maybe<CommentUpdateManyWithoutReplyToInput>;
 };
@@ -529,15 +636,15 @@ export type CommentUpdateOneWithoutRepliesInput = {
   connect?: Maybe<CommentWhereUniqueInput>;
   disconnect?: Maybe<Scalars["Boolean"]>;
   delete?: Maybe<Scalars["Boolean"]>;
-  update?: Maybe<CommentUpdateWithoutRepliesDataInput>;
+  update?: Maybe<CommentUpdateWithoutRepliesInput>;
   upsert?: Maybe<CommentUpsertWithoutRepliesInput>;
+  connectOrCreate?: Maybe<CommentCreateOrConnectWithoutrepliesInput>;
 };
 
-export type CommentUpdateWithoutRepliesDataInput = {
-  id?: Maybe<Scalars["Int"]>;
-  createdAt?: Maybe<Scalars["DateTime"]>;
-  updatedAt?: Maybe<Scalars["DateTime"]>;
-  text?: Maybe<Scalars["String"]>;
+export type CommentUpdateWithoutRepliesInput = {
+  createdAt?: Maybe<DateTimeFieldUpdateOperationsInput>;
+  updatedAt?: Maybe<DateTimeFieldUpdateOperationsInput>;
+  text?: Maybe<StringFieldUpdateOperationsInput>;
   post?: Maybe<PostUpdateOneRequiredWithoutCommentsInput>;
   replyTo?: Maybe<CommentUpdateOneWithoutRepliesInput>;
 };
@@ -545,16 +652,16 @@ export type CommentUpdateWithoutRepliesDataInput = {
 export type PostUpdateOneRequiredWithoutCommentsInput = {
   create?: Maybe<PostCreateWithoutCommentsInput>;
   connect?: Maybe<PostWhereUniqueInput>;
-  update?: Maybe<PostUpdateWithoutCommentsDataInput>;
+  update?: Maybe<PostUpdateWithoutCommentsInput>;
   upsert?: Maybe<PostUpsertWithoutCommentsInput>;
+  connectOrCreate?: Maybe<PostCreateOrConnectWithoutcommentsInput>;
 };
 
-export type PostUpdateWithoutCommentsDataInput = {
-  id?: Maybe<Scalars["Int"]>;
-  createdAt?: Maybe<Scalars["DateTime"]>;
-  updatedAt?: Maybe<Scalars["DateTime"]>;
-  title?: Maybe<Scalars["String"]>;
-  text?: Maybe<Scalars["String"]>;
+export type PostUpdateWithoutCommentsInput = {
+  createdAt?: Maybe<DateTimeFieldUpdateOperationsInput>;
+  updatedAt?: Maybe<DateTimeFieldUpdateOperationsInput>;
+  title?: Maybe<StringFieldUpdateOperationsInput>;
+  text?: Maybe<NullableStringFieldUpdateOperationsInput>;
   votes?: Maybe<VoteUpdateManyWithoutPostInput>;
 };
 
@@ -565,51 +672,56 @@ export type VoteUpdateManyWithoutPostInput = {
   disconnect?: Maybe<Array<VoteWhereUniqueInput>>;
   delete?: Maybe<Array<VoteWhereUniqueInput>>;
   update?: Maybe<Array<VoteUpdateWithWhereUniqueWithoutPostInput>>;
-  updateMany?: Maybe<Array<VoteUpdateManyWithWhereNestedInput>>;
+  updateMany?: Maybe<Array<VoteUpdateManyWithWhereWithoutPostInput>>;
   deleteMany?: Maybe<Array<VoteScalarWhereInput>>;
   upsert?: Maybe<Array<VoteUpsertWithWhereUniqueWithoutPostInput>>;
+  connectOrCreate?: Maybe<Array<VoteCreateOrConnectWithoutpostInput>>;
 };
 
 export type VoteUpdateWithWhereUniqueWithoutPostInput = {
   where: VoteWhereUniqueInput;
-  data: VoteUpdateWithoutPostDataInput;
+  data: VoteUpdateWithoutPostInput;
 };
 
-export type VoteUpdateWithoutPostDataInput = {
-  direction?: Maybe<Direction>;
+export type VoteUpdateWithoutPostInput = {
+  direction?: Maybe<EnumDirectionFieldUpdateOperationsInput>;
 };
 
-export type VoteUpdateManyWithWhereNestedInput = {
+export type EnumDirectionFieldUpdateOperationsInput = {
+  set?: Maybe<Direction>;
+};
+
+export type VoteUpdateManyWithWhereWithoutPostInput = {
   where: VoteScalarWhereInput;
-  data: VoteUpdateManyDataInput;
+  data: VoteUpdateManyMutationInput;
 };
 
 export type VoteScalarWhereInput = {
-  authorId?: Maybe<IntFilter>;
-  postId?: Maybe<IntFilter>;
-  direction?: Maybe<Direction>;
   AND?: Maybe<Array<VoteScalarWhereInput>>;
   OR?: Maybe<Array<VoteScalarWhereInput>>;
   NOT?: Maybe<Array<VoteScalarWhereInput>>;
+  authorId?: Maybe<IntFilter>;
+  postId?: Maybe<IntFilter>;
+  direction?: Maybe<EnumDirectionFilter>;
 };
 
-export type VoteUpdateManyDataInput = {
-  direction?: Maybe<Direction>;
+export type VoteUpdateManyMutationInput = {
+  direction?: Maybe<EnumDirectionFieldUpdateOperationsInput>;
 };
 
 export type VoteUpsertWithWhereUniqueWithoutPostInput = {
   where: VoteWhereUniqueInput;
-  update: VoteUpdateWithoutPostDataInput;
+  update: VoteUpdateWithoutPostInput;
   create: VoteCreateWithoutPostInput;
 };
 
 export type PostUpsertWithoutCommentsInput = {
-  update: PostUpdateWithoutCommentsDataInput;
+  update: PostUpdateWithoutCommentsInput;
   create: PostCreateWithoutCommentsInput;
 };
 
 export type CommentUpsertWithoutRepliesInput = {
-  update: CommentUpdateWithoutRepliesDataInput;
+  update: CommentUpdateWithoutRepliesInput;
   create: CommentCreateWithoutRepliesInput;
 };
 
@@ -620,60 +732,63 @@ export type CommentUpdateManyWithoutReplyToInput = {
   disconnect?: Maybe<Array<CommentWhereUniqueInput>>;
   delete?: Maybe<Array<CommentWhereUniqueInput>>;
   update?: Maybe<Array<CommentUpdateWithWhereUniqueWithoutReplyToInput>>;
-  updateMany?: Maybe<Array<CommentUpdateManyWithWhereNestedInput>>;
+  updateMany?: Maybe<Array<CommentUpdateManyWithWhereWithoutReplyToInput>>;
   deleteMany?: Maybe<Array<CommentScalarWhereInput>>;
   upsert?: Maybe<Array<CommentUpsertWithWhereUniqueWithoutReplyToInput>>;
+  connectOrCreate?: Maybe<Array<CommentCreateOrConnectWithoutreplyToInput>>;
 };
 
 export type CommentUpdateWithWhereUniqueWithoutReplyToInput = {
   where: CommentWhereUniqueInput;
-  data: CommentUpdateWithoutReplyToDataInput;
+  data: CommentUpdateWithoutReplyToInput;
 };
 
-export type CommentUpdateWithoutReplyToDataInput = {
-  id?: Maybe<Scalars["Int"]>;
-  createdAt?: Maybe<Scalars["DateTime"]>;
-  updatedAt?: Maybe<Scalars["DateTime"]>;
-  text?: Maybe<Scalars["String"]>;
+export type CommentUpdateWithoutReplyToInput = {
+  createdAt?: Maybe<DateTimeFieldUpdateOperationsInput>;
+  updatedAt?: Maybe<DateTimeFieldUpdateOperationsInput>;
+  text?: Maybe<StringFieldUpdateOperationsInput>;
   post?: Maybe<PostUpdateOneRequiredWithoutCommentsInput>;
   replies?: Maybe<CommentUpdateManyWithoutReplyToInput>;
 };
 
-export type CommentUpdateManyWithWhereNestedInput = {
+export type CommentUpdateManyWithWhereWithoutReplyToInput = {
   where: CommentScalarWhereInput;
-  data: CommentUpdateManyDataInput;
+  data: CommentUpdateManyMutationInput;
 };
 
 export type CommentScalarWhereInput = {
+  AND?: Maybe<Array<CommentScalarWhereInput>>;
+  OR?: Maybe<Array<CommentScalarWhereInput>>;
+  NOT?: Maybe<Array<CommentScalarWhereInput>>;
   id?: Maybe<IntFilter>;
   createdAt?: Maybe<DateTimeFilter>;
   updatedAt?: Maybe<DateTimeFilter>;
   text?: Maybe<StringFilter>;
   authorId?: Maybe<IntFilter>;
   postId?: Maybe<IntFilter>;
-  replyToId?: Maybe<NullableIntFilter>;
-  replies?: Maybe<CommentFilter>;
-  AND?: Maybe<Array<CommentScalarWhereInput>>;
-  OR?: Maybe<Array<CommentScalarWhereInput>>;
-  NOT?: Maybe<Array<CommentScalarWhereInput>>;
+  replyToId?: Maybe<IntNullableFilter>;
 };
 
-export type CommentUpdateManyDataInput = {
-  id?: Maybe<Scalars["Int"]>;
-  createdAt?: Maybe<Scalars["DateTime"]>;
-  updatedAt?: Maybe<Scalars["DateTime"]>;
-  text?: Maybe<Scalars["String"]>;
+export type CommentUpdateManyMutationInput = {
+  createdAt?: Maybe<DateTimeFieldUpdateOperationsInput>;
+  updatedAt?: Maybe<DateTimeFieldUpdateOperationsInput>;
+  text?: Maybe<StringFieldUpdateOperationsInput>;
 };
 
 export type CommentUpsertWithWhereUniqueWithoutReplyToInput = {
   where: CommentWhereUniqueInput;
-  update: CommentUpdateWithoutReplyToDataInput;
+  update: CommentUpdateWithoutReplyToInput;
   create: CommentCreateWithoutReplyToInput;
+};
+
+export type CommentUpdateManyWithWhereWithoutPostInput = {
+  where: CommentScalarWhereInput;
+  data: CommentUpdateManyMutationInput;
 };
 
 export type CommentUpsertWithWhereUniqueWithoutPostInput = {
   where: CommentWhereUniqueInput;
-  update: CommentUpdateWithoutPostDataInput;
+  update: CommentUpdateWithoutPostInput;
   create: CommentCreateWithoutPostInput;
 };
 
@@ -687,10 +802,9 @@ export type CommentCreateInput = {
 };
 
 export type CommentUpdateInput = {
-  id?: Maybe<Scalars["Int"]>;
-  createdAt?: Maybe<Scalars["DateTime"]>;
-  updatedAt?: Maybe<Scalars["DateTime"]>;
-  text?: Maybe<Scalars["String"]>;
+  createdAt?: Maybe<DateTimeFieldUpdateOperationsInput>;
+  updatedAt?: Maybe<DateTimeFieldUpdateOperationsInput>;
+  text?: Maybe<StringFieldUpdateOperationsInput>;
   post?: Maybe<PostUpdateOneRequiredWithoutCommentsInput>;
   replyTo?: Maybe<CommentUpdateOneWithoutRepliesInput>;
   replies?: Maybe<CommentUpdateManyWithoutReplyToInput>;
@@ -704,6 +818,7 @@ export type VoteCreateInput = {
 export type PostCreateOneWithoutVotesInput = {
   create?: Maybe<PostCreateWithoutVotesInput>;
   connect?: Maybe<PostWhereUniqueInput>;
+  connectOrCreate?: Maybe<PostCreateOrConnectWithoutvotesInput>;
 };
 
 export type PostCreateWithoutVotesInput = {
@@ -714,29 +829,34 @@ export type PostCreateWithoutVotesInput = {
   comments?: Maybe<CommentCreateManyWithoutPostInput>;
 };
 
+export type PostCreateOrConnectWithoutvotesInput = {
+  where: PostWhereUniqueInput;
+  create: PostCreateWithoutVotesInput;
+};
+
 export type VoteUpdateInput = {
-  direction?: Maybe<Direction>;
+  direction?: Maybe<EnumDirectionFieldUpdateOperationsInput>;
   post?: Maybe<PostUpdateOneRequiredWithoutVotesInput>;
 };
 
 export type PostUpdateOneRequiredWithoutVotesInput = {
   create?: Maybe<PostCreateWithoutVotesInput>;
   connect?: Maybe<PostWhereUniqueInput>;
-  update?: Maybe<PostUpdateWithoutVotesDataInput>;
+  update?: Maybe<PostUpdateWithoutVotesInput>;
   upsert?: Maybe<PostUpsertWithoutVotesInput>;
+  connectOrCreate?: Maybe<PostCreateOrConnectWithoutvotesInput>;
 };
 
-export type PostUpdateWithoutVotesDataInput = {
-  id?: Maybe<Scalars["Int"]>;
-  createdAt?: Maybe<Scalars["DateTime"]>;
-  updatedAt?: Maybe<Scalars["DateTime"]>;
-  title?: Maybe<Scalars["String"]>;
-  text?: Maybe<Scalars["String"]>;
+export type PostUpdateWithoutVotesInput = {
+  createdAt?: Maybe<DateTimeFieldUpdateOperationsInput>;
+  updatedAt?: Maybe<DateTimeFieldUpdateOperationsInput>;
+  title?: Maybe<StringFieldUpdateOperationsInput>;
+  text?: Maybe<NullableStringFieldUpdateOperationsInput>;
   comments?: Maybe<CommentUpdateManyWithoutPostInput>;
 };
 
 export type PostUpsertWithoutVotesInput = {
-  update: PostUpdateWithoutVotesDataInput;
+  update: PostUpdateWithoutVotesInput;
   create: PostCreateWithoutVotesInput;
 };
 
@@ -842,15 +962,15 @@ export const CreatePostDocument = gql`
  * });
  */
 export function useCreatePostMutation(
-  baseOptions?: ApolloReactHooks.MutationHookOptions<
+  baseOptions?: Apollo.MutationHookOptions<
     CreatePostMutation,
     CreatePostMutationVariables
   >
 ) {
-  return ApolloReactHooks.useMutation<
-    CreatePostMutation,
-    CreatePostMutationVariables
-  >(CreatePostDocument, baseOptions);
+  return Apollo.useMutation<CreatePostMutation, CreatePostMutationVariables>(
+    CreatePostDocument,
+    baseOptions
+  );
 }
 export type CreatePostMutationHookResult = ReturnType<
   typeof useCreatePostMutation
@@ -885,23 +1005,17 @@ export const GetPostDocument = gql`
  * });
  */
 export function useGetPostQuery(
-  baseOptions?: ApolloReactHooks.QueryHookOptions<
-    GetPostQuery,
-    GetPostQueryVariables
-  >
+  baseOptions: Apollo.QueryHookOptions<GetPostQuery, GetPostQueryVariables>
 ) {
-  return ApolloReactHooks.useQuery<GetPostQuery, GetPostQueryVariables>(
+  return Apollo.useQuery<GetPostQuery, GetPostQueryVariables>(
     GetPostDocument,
     baseOptions
   );
 }
 export function useGetPostLazyQuery(
-  baseOptions?: ApolloReactHooks.LazyQueryHookOptions<
-    GetPostQuery,
-    GetPostQueryVariables
-  >
+  baseOptions?: Apollo.LazyQueryHookOptions<GetPostQuery, GetPostQueryVariables>
 ) {
-  return ApolloReactHooks.useLazyQuery<GetPostQuery, GetPostQueryVariables>(
+  return Apollo.useLazyQuery<GetPostQuery, GetPostQueryVariables>(
     GetPostDocument,
     baseOptions
   );
@@ -933,23 +1047,20 @@ export const GetPostsDocument = gql`
  * });
  */
 export function useGetPostsQuery(
-  baseOptions?: ApolloReactHooks.QueryHookOptions<
-    GetPostsQuery,
-    GetPostsQueryVariables
-  >
+  baseOptions?: Apollo.QueryHookOptions<GetPostsQuery, GetPostsQueryVariables>
 ) {
-  return ApolloReactHooks.useQuery<GetPostsQuery, GetPostsQueryVariables>(
+  return Apollo.useQuery<GetPostsQuery, GetPostsQueryVariables>(
     GetPostsDocument,
     baseOptions
   );
 }
 export function useGetPostsLazyQuery(
-  baseOptions?: ApolloReactHooks.LazyQueryHookOptions<
+  baseOptions?: Apollo.LazyQueryHookOptions<
     GetPostsQuery,
     GetPostsQueryVariables
   >
 ) {
-  return ApolloReactHooks.useLazyQuery<GetPostsQuery, GetPostsQueryVariables>(
+  return Apollo.useLazyQuery<GetPostsQuery, GetPostsQueryVariables>(
     GetPostsDocument,
     baseOptions
   );

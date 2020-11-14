@@ -4,11 +4,11 @@ import {
   Divider,
   List,
   ListItem,
-  makeStyles
+  makeStyles,
 } from "@material-ui/core";
 import { NextPage } from "next";
 import CommentCard, {
-  COMMENT_ON_CARD_FRAGMENT
+  COMMENT_ON_CARD_FRAGMENT,
 } from "../components/CommentCard";
 import PostCard, { POST_ON_CARD_FRAGMENT } from "../components/PostCard";
 import { useGetPostQuery } from "../lib/types";
@@ -26,14 +26,14 @@ const GET_POST_QUERY = gql`
   ${COMMENT_ON_CARD_FRAGMENT}
 `;
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   list: {
     width: "100%",
     backgroundColor: theme.palette.background.paper,
     '& [role="separator"]:last-child': {
-      display: "none"
-    }
-  }
+      display: "none",
+    },
+  },
 }));
 
 interface PostDetailProps {
@@ -45,8 +45,8 @@ const PostDetail: NextPage<PostDetailProps> = ({ id }) => {
 
   const { loading, data } = useGetPostQuery({
     variables: {
-      id
-    }
+      id,
+    },
   });
 
   if (loading && !data) {
@@ -60,7 +60,7 @@ const PostDetail: NextPage<PostDetailProps> = ({ id }) => {
       </ListItem>
       <ListItem>
         <List className={classes.list}>
-          {data.post.comments.map(comment => (
+          {data.post.comments.map((comment) => (
             <>
               <CommentCard comment={comment} />
               <Divider variant="inset" component="li" />

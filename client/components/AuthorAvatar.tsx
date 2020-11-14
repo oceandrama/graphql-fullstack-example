@@ -15,11 +15,11 @@ interface AuthorAvatarProps {
   author: AuthorAvatarFragment;
 }
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   avatar: {
     color: theme.palette.getContrastText(deepOrange[500]),
-    backgroundColor: deepOrange[500]
-  }
+    backgroundColor: deepOrange[500],
+  },
 }));
 
 const AuthorAvatar: FC<AuthorAvatarProps> = ({ author }) => {

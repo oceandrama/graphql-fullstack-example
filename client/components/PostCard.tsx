@@ -8,7 +8,7 @@ import {
   IconButton,
   makeStyles,
   Theme,
-  Typography
+  Typography,
 } from "@material-ui/core";
 import ArrowDownwardIcon from "@material-ui/icons/ArrowDownward";
 import ArrowUpwardIcon from "@material-ui/icons/ArrowUpward";
@@ -33,12 +33,12 @@ export const POST_ON_CARD_FRAGMENT = gql`
 
 const useStyles = makeStyles<Theme, PostOnCardFragment>({
   card: {
-    width: "100%"
+    width: "100%",
   },
   rating: ({ rating }) => ({
     marginLeft: "auto",
-    color: rating > 0 ? "green" : "red"
-  })
+    color: rating > 0 ? "green" : "red",
+  }),
 });
 
 interface PostCardProps {
@@ -57,7 +57,7 @@ const PostCard: FC<PostCardProps> = ({ post }) => {
           weekday: "long",
           year: "numeric",
           month: "long",
-          day: "numeric"
+          day: "numeric",
         }).format(new Date(post.createdAt))}
         action={
           <Link href="/[id]" as={`/${post.id}`} passHref>

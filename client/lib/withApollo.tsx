@@ -1,14 +1,13 @@
 import { ApolloClient, NormalizedCacheObject } from "@apollo/client";
 import App, { AppContext, AppProps } from "next/app";
 import Head from "next/head";
-
 import initApollo from "./initApollo";
 
 export interface WithApollo {
   apolloClient: ApolloClient<NormalizedCacheObject>;
 }
 
-export default (MyApp: typeof App) =>
+const withApollo = (MyApp: typeof App) =>
   class Apollo extends App {
     static async getInitialProps(ctx: AppContext) {
       const { Component, router } = ctx;
@@ -21,7 +20,7 @@ export default (MyApp: typeof App) =>
       if (typeof window === "undefined") {
         // Импортируем `@apollo/react-ssr` динамически,
         // чтобы избежать его попадания в клиентский бандл
-        const { getDataFromTree } = await import("@apollo/react-ssr");
+        const { getDataFromTree } = await import("@apollo/client/react/ssr");
 
         try {
           await getDataFromTree(
@@ -48,7 +47,7 @@ export default (MyApp: typeof App) =>
 
       return {
         ...appProps,
-        apolloState
+        apolloState,
       };
     }
 
@@ -63,3 +62,5 @@ export default (MyApp: typeof App) =>
       return <MyApp {...this.props} apolloClient={this.apolloClient} />;
     }
   };
+
+export default withApollo;

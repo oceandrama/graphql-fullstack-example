@@ -26,7 +26,7 @@ const Home: NextPage = () => {
       <ListItem>
         <PostCreateForm />
       </ListItem>
-      {data.posts.map(post => (
+      {data.posts.map((post) => (
         <ListItem key={post.id}>
           <PostCard post={post} />
         </ListItem>

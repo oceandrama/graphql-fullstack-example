@@ -8,8 +8,8 @@ import withApollo, { WithApollo } from "../lib/withApollo";
 const styles = createStyles({
   container: {
     width: 500,
-    margin: "0 auto"
-  }
+    margin: "0 auto",
+  },
 });
 
 class MyApp extends App<WithApollo & WithStyles<typeof styles>> {
@@ -43,5 +43,5 @@ class MyApp extends App<WithApollo & WithStyles<typeof styles>> {
   }
 }
 
-const StyledApp = withStyles(styles)(MyApp) as typeof MyApp 
+const StyledApp = withStyles(styles)(MyApp) as typeof MyApp;
 export default withApollo(StyledApp);
