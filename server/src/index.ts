@@ -1,18 +1,16 @@
-import { GraphQLServer } from "graphql-yoga";
+import { ApolloServer } from "apollo-server";
 import schema from "./schema";
 import { createContext } from "./context";
 
-const server = new GraphQLServer({
+const server = new ApolloServer({
   schema,
   context: createContext,
+  introspection: true,
+  playground: true,
+  cors: {
+    origin: "http://localhost:3000",
+    credentials: true,
+  },
 });
 
-server.start(
-  {
-    cors: {
-      origin: "http://localhost:3000",
-      credentials: true,
-    },
-  },
-  () => console.log(`🚀 Server ready at http://localhost:4000`)
-);
+server.listen().then(({ url }) => console.log(`Server ready at ${url}`));

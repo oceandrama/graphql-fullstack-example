@@ -1,11 +1,16 @@
 import { PrismaClient, User } from "@prisma/client";
 import cookie from "cookie";
-import { ContextParameters } from "graphql-yoga/dist/types";
+import type { Request, Response } from "express";
 import { verify } from "jsonwebtoken";
 
 const prisma = new PrismaClient();
 
-export interface Context extends ContextParameters {
+interface ExpressContext {
+  req: Request;
+  res: Response;
+}
+
+export interface Context extends ExpressContext {
   prisma: PrismaClient;
   user: User | null;
 }
@@ -14,7 +19,7 @@ interface Token {
   userId: number;
 }
 
-export function getUser(request: Context["request"]) {
+export function getUser(request: Request) {
   const token = cookie.parse(request.headers.cookie || "")["auth.token"];
 
   if (token) {
@@ -25,10 +30,8 @@ export function getUser(request: Context["request"]) {
   return null;
 }
 
-export const createContext = async (
-  params: ContextParameters
-): Promise<Context> => ({
-  ...params,
+export const createContext = async (ctx: ExpressContext): Promise<Context> => ({
+  ...ctx,
   prisma,
-  user: await getUser(params.request),
+  user: await getUser(ctx.req),
 });

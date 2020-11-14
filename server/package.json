@@ -6,16 +6,16 @@
     "build": "rimraf dist && yarn generate && tsc",
     "dev": "yarn generate && ts-node-dev src/index.ts",
     "generate": "prisma generate && ts-node-dev --transpile-only src/schema",
-    "migrate": "prisma migrate save --experimental && prisma migrate up --experimental",
+    "migrate": "prisma migrate save --experimental && prisma migrate up --experimental && yarn generate",
     "seed": "ts-node-dev prisma/seed.ts",
     "start": "cross-env NODE_ENV=production node dist/src"
   },
   "dependencies": {
     "@nexus/schema": "^0.18.0",
     "@prisma/client": "^2.11.0",
+    "apollo-server": "^2.19.0",
     "bcrypt": "^5.0.0",
     "cookie": "^0.4.1",
-    "graphql-yoga": "^1.18.3",
     "jsonwebtoken": "^8.5.1",
     "nexus-plugin-prisma": "^0.23.1"
   },
