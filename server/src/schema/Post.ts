@@ -26,9 +26,9 @@ export const Post = objectType({
         return votes.reduce((rating, vote) => {
           switch (vote.direction) {
             case "UP":
-              return (rating += 1);
+              return rating + 1;
             case "DOWN":
-              return (rating -= 1);
+              return rating - 1;
           }
         }, 0);
       },

@@ -1,5 +1,5 @@
 import { makeSchema } from "@nexus/schema";
-import { nexusPrismaPlugin } from "nexus-prisma";
+import { nexusSchemaPrisma } from "nexus-plugin-prisma/schema";
 import * as path from "path";
 import * as Comment from "./Comment";
 import * as Mutation from "./Mutation";
@@ -11,7 +11,9 @@ import * as Vote from "./Vote";
 export default makeSchema({
   types: [Query, Mutation, Post, User, Comment, Vote],
   plugins: [
-    nexusPrismaPlugin({
+    nexusSchemaPrisma({
+      paginationStrategy: "prisma",
+      experimentalCRUD: true,
       computedInputs: {
         author: ({ ctx: { user } }) => {
           if (!user) {
@@ -37,7 +39,7 @@ export default makeSchema({
     contextType: "Context.Context",
     sources: [
       {
-        source: "@prisma/client",
+        source: ".prisma/client",
         alias: "prisma",
       },
       {

@@ -8,7 +8,7 @@ generator client {
 }
 
 model User {
-  id        Int       @default(autoincrement()) @id
+  id        Int       @id @default(autoincrement())
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
   name      String?
@@ -20,7 +20,7 @@ model User {
 }
 
 model Post {
-  id        Int       @default(autoincrement()) @id
+  id        Int       @id @default(autoincrement())
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
   title     String
@@ -32,7 +32,7 @@ model Post {
 }
 
 model Comment {
-  id        Int       @default(autoincrement()) @id
+  id        Int       @id @default(autoincrement())
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
   text      String
