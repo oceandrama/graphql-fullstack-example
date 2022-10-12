@@ -13,7 +13,7 @@
   "dependencies": {
     "@nexus/schema": "^0.18.0",
     "@prisma/client": "^2.11.0",
-    "apollo-server": "^2.19.0",
+    "apollo-server": "^2.25.4",
     "bcrypt": "^5.0.0",
     "cookie": "^0.4.1",
     "jsonwebtoken": "^8.5.1",
